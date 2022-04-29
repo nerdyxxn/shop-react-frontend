@@ -5,12 +5,14 @@
 **코딩애플** React 강의를 들으며 만든 프로젝트입니다.
 
 React 기초 문법부터 component, props, router, redux에 대한 내용을 담고 있습니다.
+
 수강 과정에 따라 업데이트 될 예정입니다.
 
 [Settings](#settings) • [Link](#link)
 
 </div>
 <br/>
+
 ## Settings
 
 1. Node.js 설치

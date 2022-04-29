@@ -1,6 +1,6 @@
 /*eslint-disable*/
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Navbar,
   Nav,
@@ -17,9 +17,11 @@ import Detail from './Detail';
 import axios from 'axios';
 import { Link, Route, Switch } from 'react-router-dom';
 
+export let 재고context = React.createContext();
+
 function App() {
   let [prod, prod변경] = useState(Data);
-  let [재고, 재고변경] = useState([10, 11, 12]);
+  let [재고, 재고변경] = useState([10, 11, 12, 13, 14, 15]);
 
   return (
     <div className="App">
@@ -55,22 +57,24 @@ function App() {
 
       <Route exact path="/">
         <div className="background">
-          {/* <h1>20% Season Off</h1>
-        <p>
-          This is a simple hero unit, a simple jumbotron-style component for
-          calling extra attention to featured content or information.
-        </p> */}
+          <h1>20% Season Off</h1>
+          <p>
+            This is a simple hero unit, a simple jumbotron-style component for
+            calling extra attention to featured content or information.
+          </p>
           <p>
             <Button>Learn more</Button>
           </p>
         </div>
 
         <div className="container">
-          <div className="row">
-            {prod.map((a, i) => {
-              return <Card prod={prod[i]} i={i} key={i} />;
-            })}
-          </div>
+          <재고context.Provider value={재고}>
+            <div className="row">
+              {prod.map((a, i) => {
+                return <Card prod={prod[i]} i={i} key={i} />;
+              })}
+            </div>
+          </재고context.Provider>
           <button
             className="btn btn-primary"
             onClick={() => {
@@ -90,13 +94,17 @@ function App() {
       </Route>
 
       <Route path="/detail/:id">
-        <Detail prod={prod} 재고={재고} />
+        <재고context.Provider value={재고}>
+          <Detail prod={prod} 재고={재고} 재고변경={재고변경} />
+        </재고context.Provider>
       </Route>
     </div>
   );
 }
 
 function Card(props) {
+  let 재고 = useContext(재고context);
+
   return (
     <div className="col-md-4">
       {/* <img src={require('./prod0' + (props.i + 1) + '.jpeg')} /> */}
@@ -109,6 +117,7 @@ function Card(props) {
       <h4>{props.prod.title}</h4>
       <p>{props.prod.content}</p>
       <p>{props.prod.price}</p>
+      {재고[props.i]}
     </div>
   );
 }
