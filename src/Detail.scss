@@ -1,3 +1,14 @@
+/* 애니메이션 시작 할 때 */
+.wow-enter {
+  opacity: 0;
+}
+
+/* 애니메이션 동작 할 때 */
+.wow-enter-active {
+  opacity: 1;
+  transition: all 500ms;
+}
+
 .my-alert {
   background: #eee;
   padding: 15px;

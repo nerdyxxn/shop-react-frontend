@@ -1,11 +1,27 @@
 /*eslint-disable*/
 
 import React from 'react';
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Form,
+  Button,
+} from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
 import './Detail.scss';
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { 재고context } from './App.js';
+import { CSSTransition } from 'react-transition-group';
 
 function Detail(props) {
+  let [alert, alert변경] = useState(true);
+  let [누른탭, 누른탭변경] = useState(0);
+  let [스위치, 스위치변경] = useState(false);
+
+  let 재고 = useContext(재고context);
   let history = useHistory();
   let { id } = useParams();
 
@@ -14,7 +30,6 @@ function Detail(props) {
   // });
   let 찾은상품 = props.prod.find((x) => x.id == id);
 
-  let [alert, alert변경] = useState(true);
   let 타이머 = setTimeout(() => {
     alert변경(false);
     return () => {
@@ -36,16 +51,30 @@ function Detail(props) {
 
       <div className="row">
         <div className="col-md-6">
-          <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" alt="" />
+          <img
+            src={
+              'https://codingapple1.github.io/shop/shoes' +
+              (찾은상품.id + 1) +
+              '.jpg'
+            }
+            width="100%"
+            alt=""
+          />
         </div>
         <div className="col-md-6 mt-4">
           <h4 className="pt-5">{찾은상품.title}</h4>
           <p>{찾은상품.content}</p>
           <p>{찾은상품.price}원</p>
 
-          <p>재고 : ??</p>
+          <Info 재고={props.재고}></Info>
 
-          <button className="btn btn-danger">주문하기</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              props.재고변경([9, 11, 12]);
+            }}>
+            주문하기
+          </button>
           <button
             onClick={() => {
               history.goBack();
@@ -55,12 +84,52 @@ function Detail(props) {
           </button>
         </div>
       </div>
+
+      <Nav className="mt-5" variant="tabs" defaultActiveKey="link-0">
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-0"
+            onClick={() => {
+              스위치변경(false);
+              누른탭변경(0);
+            }}>
+            Active
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-1"
+            onClick={() => {
+              스위치변경(false);
+              누른탭변경(1);
+            }}>
+            Option 2
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <CSSTransition in={스위치} classNames="wow" timeout={500}>
+        <TabContent 누른탭={누른탭} 스위치변경={스위치변경} />
+      </CSSTransition>
     </div>
   );
 }
 
-function Info() {
-  return <p>재고</p>;
+function TabContent(props) {
+  useEffect(() => {
+    props.스위치변경(true);
+  });
+
+  if (props.누른탭 === 0) {
+    return <div>0번째 내용입니니다</div>;
+  } else if (props.누른탭 === 1) {
+    return <div>1번째 내용입니니다</div>;
+  } else if (props.누른탭 === 2) {
+    return <div>2번째 내용입니니다</div>;
+  }
+}
+
+function Info(props) {
+  return <p>재고 : {props.재고[0]}</p>;
 }
 
 export default Detail;

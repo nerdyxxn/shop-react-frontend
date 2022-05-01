@@ -44,12 +44,17 @@
   height: 370px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
+  color: #fff;
   background: url('./background.jpg');
   background-size: cover;
   background-color: rgb(238, 238, 238);
   background-position: 50% center;
   background-repeat: no-repeat;
   margin-bottom: 100px;
+}
+
+.col-md-4 img {
+  cursor: pointer;
 }
