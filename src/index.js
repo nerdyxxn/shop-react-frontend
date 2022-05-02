@@ -6,11 +6,43 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
-let store = createStore(() => {
-  return [{ id: 0, name: '멋진신발', quantity: 2 }];
-});
+// reducer - 1
+let 초기값 = [
+  { id: 0, name: '멋진신발', quantity: 2 },
+  { id: 1, name: '멋진신발2', quantity: 1 },
+];
+
+function reducer(state = 초기값, action) {
+  if (action.type === '항목추가') {
+    let copy = [...state];
+    copy.push(action.payload);
+    return copy;
+  } else if (action.type === '수량증가') {
+    let copy = [...state]; // 초기 state를 deep copy
+    copy[action.데이터].quantity++;
+    return copy;
+  } else if (action.type === '수량감소') {
+    let copy = [...state];
+    copy[action.데이터].quantity--;
+    return copy;
+  } else {
+    return state; // reducer는 반드시 state를 리턴해야 한다.
+  }
+}
+
+// reducer - 2
+let alert초기값 = true;
+function reducer2(state = alert초기값, action) {
+  if (action.type === 'alert닫기') {
+    return false;
+  } else {
+    return state;
+  }
+}
+
+let store = createStore(combineReducers({ reducer, reducer2 }));
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);

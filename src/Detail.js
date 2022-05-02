@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { 재고context } from './App.js';
 import { CSSTransition } from 'react-transition-group';
+import { connect } from 'react-redux';
 
 function Detail(props) {
   let [alert, alert변경] = useState(true);
@@ -71,7 +72,12 @@ function Detail(props) {
           <button
             className="btn btn-danger"
             onClick={() => {
-              props.재고변경([9, 11, 12]);
+              //props.재고변경([9, 11, 12]);
+              props.dispatch({
+                type: '항목추가',
+                payload: { id: 2, name: '새로운상품', quantity: 1 },
+              });
+              history.push('/cart');
             }}>
             주문하기
           </button>
@@ -132,4 +138,14 @@ function Info(props) {
   return <p>재고 : {props.재고[0]}</p>;
 }
 
-export default Detail;
+function stateToProps(state) {
+  return {
+    // redux.store안에 있는 data를 가져와서 props로 변환해주는 함수
+    // state 중에 name이라는 데이터가 있으면 상품명이라는 props로 변환
+    // state를 props로 바꿔주기
+    state: state.reducer,
+    alert: state.reducer2,
+  };
+}
+
+export default connect(stateToProps)(Detail);
