@@ -16,9 +16,19 @@ let 초기값 = [
 
 function reducer(state = 초기값, action) {
   if (action.type === '항목추가') {
-    let copy = [...state];
-    copy.push(action.payload);
-    return copy;
+    let found = state.findIndex((a) => {
+      return a.id === action.데이터.id;
+    });
+    // 같은 id 있나 확인
+    if (found >= 0) {
+      let copy = [...state];
+      copy[found].quantity++;
+      return copy;
+    } else {
+      let copy = [...state];
+      copy.push(action.데이터);
+      return copy;
+    }
   } else if (action.type === '수량증가') {
     let copy = [...state]; // 초기 state를 deep copy
     copy[action.데이터].quantity++;
@@ -48,13 +58,11 @@ const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
 root.render(
-  <StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </StrictMode>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
