@@ -72,10 +72,9 @@ function Detail(props) {
           <button
             className="btn btn-danger"
             onClick={() => {
-              //props.재고변경([9, 11, 12]);
               props.dispatch({
                 type: '항목추가',
-                payload: { id: 2, name: '새로운상품', quantity: 1 },
+                데이터: { id: 찾은상품.id, name: 찾은상품.title, quantity: 1 },
               });
               history.push('/cart');
             }}>
