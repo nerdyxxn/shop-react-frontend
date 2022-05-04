@@ -21,7 +21,6 @@ function Detail(props) {
   let [alert, alert변경] = useState(true);
   let [누른탭, 누른탭변경] = useState(0);
   let [스위치, 스위치변경] = useState(false);
-  let [최근본상품, 최근본상품변경] = useState([]);
 
   let 재고 = useContext(재고context);
   let history = useHistory();
@@ -44,13 +43,17 @@ function Detail(props) {
   }, [alert]);
 
   useEffect(() => {
-    if (localStorage.watched === undefined) {
-      localStorage.setItem('watched', JSON.stringify([]));
+    let arr = localStorage.getItem('watched');
+    if (arr === null) {
+      arr = [];
+    } else {
+      arr = JSON.parse(arr);
     }
-    let watched = JSON.parse(localStorage.getItem('watched'));
-    watched.unshift(id);
-    watched = [...new Set(watched)].slice(0, 3);
-    localStorage.setItem('watched', JSON.stringify(watched));
+
+    arr.push(id);
+    arr = new Set(arr); // Set 자료형은 Array랑 똑같은데 중복을 자동으로 제거해준다.
+    arr = [...arr];
+    localStorage.setItem('watched', JSON.stringify(arr));
   }, []);
 
   return (

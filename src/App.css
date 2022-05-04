@@ -58,3 +58,18 @@
 .col-md-4 img {
   cursor: pointer;
 }
+
+.watched {
+  position: absolute;
+  top: 500px;
+  right: 10px;
+  width: 100%;
+  max-width: 200px;
+  background: lightgray;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.watched img {
+  width: 150px;
+}

@@ -16,13 +16,14 @@ import Data from './data.js';
 import Detail from './Detail';
 import Cart from './Cart';
 import axios from 'axios';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
 
 export let 재고context = React.createContext();
 
 function App() {
   let [prod, prod변경] = useState(Data);
   let [재고, 재고변경] = useState([10, 11, 12, 13, 14, 15]);
+  let [shoesAll, setShoesAll] = useState(Data);
 
   return (
     <div className="App">
@@ -75,6 +76,7 @@ function App() {
                 return <Card prod={prod[i]} i={i} key={i} />;
               })}
             </div>
+            <Watched shoesAll={shoesAll} setShoesAll={setShoesAll}></Watched>
           </재고context.Provider>
           <button
             className="btn btn-primary"
@@ -127,6 +129,46 @@ function Card(props) {
       <p>{props.prod.content}</p>
       <p>{props.prod.price}</p>
       <p>재고 : {재고[props.i]}</p>
+    </div>
+  );
+}
+
+function Watched(props) {
+  let watchedAll = JSON.parse(localStorage.getItem('watched'));
+  let findWatched = [];
+  if (watchedAll !== null) {
+    for (let i = 0; i < watchedAll.length; i++) {
+      findWatched.push(
+        props.shoesAll.find(function (item) {
+          return item.id === parseInt(watchedAll[i]);
+        }),
+      );
+    }
+  }
+
+  let history = useHistory();
+
+  return (
+    <div className="watched">
+      <p className="item">최근 본 상품</p>
+      {findWatched.map((watched, idx) => {
+        return (
+          <div
+            className="watched-item"
+            key={idx}
+            onClick={() => {
+              history.push(`/detail/${watched.id}`);
+            }}>
+            <img
+              src={`https://codingapple1.github.io/shop/shoes${
+                watched.id + 1
+              }.jpg`}
+              alt="item"
+            />
+            <p className="name">{watched.title}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
